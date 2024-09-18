@@ -1,8 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {
+  Container,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Card,
+  CardContent,
+  CircularProgress,
+} from "@mui/material";
 
 const TopCustomers = () => {
   const [customers, setCustomers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTopCustomers = async () => {
@@ -13,6 +24,8 @@ const TopCustomers = () => {
         setCustomers(response.data);
       } catch (error) {
         console.error("Error fetching top customers:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -20,16 +33,30 @@ const TopCustomers = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Top 5 Most Valuable Customers</h2>
-      <ul>
-        {customers.map((customer) => (
-          <li key={customer.customer_id}>
-            {customer.name}: ${customer.total_spent.toFixed(2)}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Container>
+      <Typography variant="h4" gutterBottom>
+        Top 5 Most Valuable Customers
+      </Typography>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <List>
+          {customers.map((customer) => (
+            <ListItem
+              key={customer.customer_id}
+              component={Card}
+              variant="outlined"
+              sx={{ mb: 1 }}
+            >
+              <CardContent>
+                <Typography variant="h6">{customer.name}</Typography>
+                <ListItemText primary={`$${customer.total_spent.toFixed(2)}`} />
+              </CardContent>
+            </ListItem>
+          ))}
+        </List>
+      )}
+    </Container>
   );
 };
 
