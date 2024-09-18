@@ -7,7 +7,9 @@ const TopCustomers = () => {
   useEffect(() => {
     const fetchTopCustomers = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/top-customers");
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/top-customers`
+        );
         setCustomers(response.data);
       } catch (error) {
         console.error("Error fetching top customers:", error);

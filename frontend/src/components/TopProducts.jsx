@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
 const TopProducts = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchTopProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/top-products");
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/top-products`
+        );
         setProducts(response.data);
       } catch (error) {
         console.error("Error fetching top products:", error);
